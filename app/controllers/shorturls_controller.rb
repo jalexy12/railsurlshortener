@@ -1,4 +1,4 @@
-class ShorturlController < ApplicationController
+class ShorturlsController < ApplicationController
 	def index
 		@shorturls = Shorturl.all
 	end
@@ -11,8 +11,6 @@ class ShorturlController < ApplicationController
 
 	def new 
 		@url = Shorturl.new
-		@shorturl = @url.id
-		@longurl = @url.longurl
 	end
 
 
@@ -21,8 +19,14 @@ class ShorturlController < ApplicationController
 
 	def create
 		@url = Shorturl.new(url_params)
-
+		if @url.save
+			flash[:notice] = "Entry created successfully"
+			redirect_to action: "index", controller: "shorturls"
+		else
+			render "new"
+		end
 	end
+
 	def update
 	end
 	private
